@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>stocks</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css" />
+
+</head>
+<body>
+
+ <form action="/main/" method="post">
+        <div class="container">
+            <h1 align="center">Place Your Order Here...</h1><br><br>
+            {{msg}}<br><br>
+            <div class="row">
+                <div class="col-md-6">
+                    <label>Select Stock</label>
+                    <select name="stock" data-live-search="true" id="stock" class="form-control" title="Select Stock">
+                    {% for stock in stocklist %}
+                    <option value="{{stock}}">{{stock}}</option>
+                    {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label>Select Action</label>
+                    <select name="Action" id="Action" class="form-control" title="Action">
+                        <option name="BUY" value="BUY">BUY</option>
+                        <option name="SELL" value="SELL">SELL</option>
+                    </select>
+
+                </div>
+                <div class="col-md-6">
+                    <label>Place Order</label>
+                    <input type="submit" name="order" id="order" class="form-control" title="Order">
+                </div>
+            </div>
+        </div>
+        </form>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
+
+<script>
+            $(document).ready(function () {
+                $("#stock").selectpicker();
+
+                function load_data(type, stock) {
+                    $.ajax({
+                        url: "/main/",
+                        method: "GET",
+                        data: { type: type, stock: stock },
+                        dataType: "text",
+                        success: function (data) { //alert(stock)
+                            var html = "";
+                            for (var count = 0; count < data.length; count++) {
+                                html += '<option value="' + data[count].id + '">' + data[count].name + "</option>";
+                            }
+
+                        },
+                    });
+                }
+
+            });
+        </script>
+
+<br><br>
+</body>
+</html>
